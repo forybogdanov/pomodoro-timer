@@ -122,24 +122,122 @@ void setup(){
   WiFi.softAP(ssid);
   server.on("/", HTTP_GET, [] (AsyncWebServerRequest *request) {
     String content = R"rawliteral(
-      <div style="font-family: 'Times New Roman', serif; font-weight: bold; background: #D5D8DC; color: #2E4053; max-width: 400px; margin: 40px auto; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(46, 64, 83, 0.2);">
-      <h1 style="color: #2E4053; text-align: center; font-size: 2.5em; margin-bottom: 20px; letter-spacing: 1px;">Pomodoro Timer</h1>
-      <form action="/set" style="display: flex; flex-direction: column; gap: 15px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label for="sessions" style="color: #2E4053; font-size: 1.8em;">Sessions:</label>
-          <input type="number" name="sessions" id="sessions" min="1" style="width: 60px; padding: 8px; border: none; border-bottom: 2px solid #F1C40F; background: transparent; color: #2E4053; font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1em; text-align: center;">
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label for="focus" style="color: #2E4053; font-size: 1.8em;">Focus (min):</label>
-          <input type="number" name="focus" id="focus" min="1" style="width: 60px; padding: 8px; border: none; border-bottom: 2px solid #F1C40F; background: transparent; color: #2E4053; font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1em; text-align: center;">
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label for="break" style="color: #2E4053; font-size: 1.8em;">Break (min):</label>
-          <input type="number" name="break" id="break" min="1" style="width: 60px; padding: 8px; border: none; border-bottom: 2px solid #F1C40F; background: transparent; color: #2E4053; font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1em; text-align: center;">
-        </div>
-        <input type="submit" value="Start" style="width: 100%; padding: 12px; background-color: #F1C40F; color: #2E4053; border: none; border-radius: 5px; cursor: pointer; font-family: 'Times New Roman', serif; font-weight: bold; font-size: 2.1em; margin-top: 10px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(46, 64, 83, 0.1);">
-      </form>
-    </div>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pomodoro Timer</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F2F2F2; /* Off-white background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+          }
+
+          .container {
+            background: #FFFFFF; /* White box */
+            color: #1D3461; /* Deep Blue */
+            max-width: 400px;
+            width: 90%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          }
+
+          h1 {
+            color: #1D3461; /* Deep Blue */
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+          }
+
+          form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+          }
+
+          .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          label {
+            color: #1D3461;
+            font-size: 1.2em;
+          }
+
+          input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: none;
+            border-bottom: 2px solid #1D3461; /* Deep Blue border */
+            background: transparent;
+            color: #1D3461;
+            font-family: 'Arial', sans-serif;
+            font-size: 1em;
+            text-align: center;
+          }
+
+          input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #F1C40F; /* Yellow Accent */
+            color: #1D3461;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+
+          input[type="submit"]:hover {
+            background-color: #D4AC0D; /* Darker yellow for hover */
+          }
+
+          @media (max-width: 480px) {
+            h1 {
+              font-size: 2em;
+            }
+
+            label {
+              font-size: 1em;
+            }
+
+            input[type="number"] {
+              width: 70px;
+            }
+
+            input[type="submit"] {
+              font-size: 1.2em;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Pomodoro Timer</h1>
+          <form action="/set">
+            <div class="input-group">
+              <label for="sessions">Sessions:</label>
+              <input type="number" name="sessions" id="sessions" min="1">
+            </div>
+            <div class="input-group">
+              <label for="focus">Focus (min):</label>
+              <input type="number" name="focus" id="focus" min="1">
+            </div>
+            <div class="input-group">
+              <label for="break">Break (min):</label>
+              <input type="number" name="break" id="break" min="1">
+            </div>
+            <input type="submit" value="Start">
+          </form>
     )rawliteral";
 
     lcd.clear();
